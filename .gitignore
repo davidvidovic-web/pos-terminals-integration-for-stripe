@@ -1,0 +1,19 @@
+# Dependencies
+vendor/
+
+# WordPress
+.DS_Store
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build files
+node_modules/
+dist/
+build/
