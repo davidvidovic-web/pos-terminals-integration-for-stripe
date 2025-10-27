@@ -1025,6 +1025,26 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
   font-size: 0.875rem;
 }
 
+/* Mobile tooltip adjustments */
+@media (max-width: 768px) {
+  .stripe-terminal-pos .step-data-tooltip {
+    position: fixed;
+    bottom: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 90vw;
+    max-width: 90vw;
+    max-height: 70vh;
+    overflow-y: auto;
+    font-size: 0.8rem;
+  }
+  
+  .stripe-terminal-pos .step-data-tooltip::after {
+    display: none; /* Hide arrow on mobile */
+  }
+}
+
 .stripe-terminal-pos .progress-step.has-data:hover .step-data-tooltip,
 .stripe-terminal-pos .progress-step.active .step-data-tooltip.show,
 .stripe-terminal-pos .progress-step.completed .step-data-tooltip.show {
@@ -1113,6 +1133,13 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
     width: 35px;
     height: 35px;
     font-size: 0.875rem;
+  }
+
+  .wrap .stripe-terminal-admin-container {
+    padding: 0;
+  }
+  #cancel-confirmation-modal.cancel-modal, .stripe-terminal-pos .cancel-modal, .stripe-terminal-pos#cancel-confirmation-modal {
+    width: 100% !important;
   }
 }
 
@@ -1612,41 +1639,396 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
   outline-offset: 2px;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .stripe-terminal-pos {
-    margin: 1rem;
-  }
+/* Responsive design - Enhanced Mobile First */
 
+/* Base mobile-first styles */
+.stripe-terminal-pos {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.stripe-terminal-pos .stripe-terminal-admin-container {
+  padding: 1rem;
+  min-height: auto;
+}
+
+.stripe-terminal-pos .pos-section {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  overflow-x: hidden;
+}
+
+/* Stack everything vertically on mobile by default */
+.stripe-terminal-pos .payment-info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: stretch;
+  justify-content: flex-start;
+  margin-top: 1rem;
+}
+
+.stripe-terminal-pos .payment-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Product search controls - mobile first */
+.stripe-terminal-pos .product-search-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.stripe-terminal-pos .product-search-controls .select2-container,
+.stripe-terminal-pos .product-search-controls .button {
+  flex: 1 1 100%;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Form rows stack on mobile */
+.stripe-terminal-pos .form-row {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.stripe-terminal-pos .form-row input {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Button groups stack vertically */
+.stripe-terminal-pos .button-group,
+body.wp-admin .stripe-terminal-pos .button-group,
+.wp-core-ui .stripe-terminal-pos .button-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  width: 100% !important;
+}
+
+.stripe-terminal-pos .button-group .button,
+body.wp-admin .stripe-terminal-pos .button-group .button,
+.wp-core-ui .stripe-terminal-pos .button-group .button {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+/* Payment controls stack vertically */
+.stripe-terminal-pos .payment-controls,
+body.wp-admin .stripe-terminal-pos .payment-controls,
+.wp-core-ui .stripe-terminal-pos .payment-controls {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  width: 100% !important;
+  margin-top: 1.5rem !important;
+}
+
+.stripe-terminal-pos .payment-controls button,
+.stripe-terminal-pos .payment-controls .button {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* Terminal list - always single column on mobile */
+.stripe-terminal-pos .terminal-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Cart table mobile optimization */
+.stripe-terminal-pos .cart-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+.stripe-terminal-pos .cart-table {
+  width: 100%;
+  min-width: 500px; /* Minimum width to prevent crushing */
+  font-size: 0.85rem;
+}
+
+.stripe-terminal-pos .cart-table th,
+.stripe-terminal-pos .cart-table td {
+  padding: 0.75rem 0.5rem;
+  white-space: nowrap;
+}
+
+.stripe-terminal-pos .cart-table th:first-child,
+.stripe-terminal-pos .cart-table td:first-child {
+  white-space: normal;
+  max-width: 150px;
+  word-wrap: break-word;
+}
+
+/* Progress bar mobile optimization */
+.stripe-terminal-pos .payment-progress-container {
+  padding: 1.5rem 1rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stripe-terminal-pos .progress-steps {
+  min-width: 400px; /* Ensure progress doesn't get squished */
+}
+
+.stripe-terminal-pos .step-circle {
+  width: 40px;
+  height: 40px;
+  font-size: 0.9rem;
+}
+
+.stripe-terminal-pos .step-label {
+  font-size: 0.75rem;
+  max-width: 80px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.stripe-terminal-pos .progress-line {
+  margin: 0 0.5rem;
+  min-width: 30px;
+}
+
+/* Modal mobile optimization */
+.stripe-terminal-pos .cancel-modal-content {
+  width: 95%;
+  max-width: 95vw;
+  max-height: 90vh;
+  margin: 5vh 2.5vw;
+}
+
+.stripe-terminal-pos .cancel-modal-header,
+.stripe-terminal-pos .cancel-modal-body {
+  padding: 1.5rem 1rem;
+}
+
+.stripe-terminal-pos .cancel-modal-footer {
+  padding: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stripe-terminal-pos .cancel-modal-footer .button {
+  width: 100%;
+}
+
+/* Status messages mobile */
+.stripe-terminal-pos .status-message {
+  padding: 1rem;
+  margin: 1rem 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Receipt mobile */
+.stripe-terminal-pos .payment-receipt {
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+}
+
+/* Buttons - ensure they don't overflow */
+.stripe-terminal-pos .button,
+.stripe-terminal-pos button {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.4;
+  padding: 0.875rem 1rem;
+}
+
+/* Create payment button mobile */
+body.wp-admin .stripe-terminal-pos #create-payment,
+.wp-core-ui .stripe-terminal-pos #create-payment,
+.wp-admin .stripe-terminal-pos #create-payment,
+.stripe-terminal-pos #create-payment,
+.stripe-terminal-pos button#create-payment {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding: 1rem !important;
+  font-size: 1rem !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+}
+
+/* Tablet styles - 769px to 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
   .stripe-terminal-pos .stripe-terminal-admin-container {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
   .stripe-terminal-pos .pos-section {
     padding: 1.5rem;
   }
 
-  .stripe-terminal-pos .terminal-list {
-    grid-template-columns: 1fr;
+  .stripe-terminal-pos .payment-info-container {
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-between;
   }
 
   .stripe-terminal-pos .product-search-controls {
-    flex-direction: column;
-    gap: 1rem;
+    flex-direction: row;
+    align-items: center;
   }
 
-  .stripe-terminal-pos .product-search-controls .select2-container,
+  .stripe-terminal-pos .product-search-controls .select2-container {
+    flex: 0 0 70%;
+  }
+
   .stripe-terminal-pos .product-search-controls .button {
-    flex: 1 1 100%;
+    flex: 0 0 28%;
+  }
+
+  .stripe-terminal-pos .button-group,
+  body.wp-admin .stripe-terminal-pos .button-group,
+  .wp-core-ui .stripe-terminal-pos .button-group {
+    flex-direction: row !important;
+    grid-template-columns: 1fr 1fr !important;
+    display: grid !important;
+  }
+
+  .stripe-terminal-pos .payment-controls,
+  body.wp-admin .stripe-terminal-pos .payment-controls,
+  .wp-core-ui .stripe-terminal-pos .payment-controls {
+    flex-direction: row !important;
+  }
+
+  .stripe-terminal-pos .terminal-list {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+/* Desktop styles - 1025px and up */
+@media (min-width: 1025px) {
+  .stripe-terminal-pos {
+    margin: 0 auto;
+  }
+
+  .stripe-terminal-pos .stripe-terminal-admin-container {
+    padding: 2rem;
+  }
+
+  .stripe-terminal-pos .pos-section {
+    padding: 2rem;
+    margin-bottom: 2rem;
   }
 
   .stripe-terminal-pos .payment-info-container {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-between;
   }
 
-  .stripe-terminal-pos .button-group {
-    grid-template-columns: 1fr;
+  .stripe-terminal-pos .product-search-controls {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .stripe-terminal-pos .product-search-controls .select2-container {
+    flex: 0 0 70%;
+  }
+
+  .stripe-terminal-pos .product-search-controls .button {
+    flex: 0 0 28%;
+  }
+
+  .stripe-terminal-pos .button-group,
+  body.wp-admin .stripe-terminal-pos .button-group,
+  .wp-core-ui .stripe-terminal-pos .button-group {
+    flex-direction: row !important;
+    grid-template-columns: 1fr 1fr !important;
+    display: grid !important;
+  }
+
+  .stripe-terminal-pos .payment-controls,
+  body.wp-admin .stripe-terminal-pos .payment-controls,
+  .wp-core-ui .stripe-terminal-pos .payment-controls {
+    flex-direction: row !important;
+  }
+
+  .stripe-terminal-pos .terminal-list {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .stripe-terminal-pos .progress-steps {
+    min-width: auto;
+  }
+
+  .stripe-terminal-pos .cart-table {
+    min-width: auto;
+  }
+
+  /* Desktop buttons can have original sizing */
+  .stripe-terminal-pos .button,
+  .stripe-terminal-pos button {
+    width: auto;
+    min-width: var(--button-min-width);
+  }
+
+  body.wp-admin .stripe-terminal-pos #create-payment,
+  .wp-core-ui .stripe-terminal-pos #create-payment,
+  .wp-admin .stripe-terminal-pos #create-payment,
+  .stripe-terminal-pos #create-payment,
+  .stripe-terminal-pos button#create-payment {
+    width: auto !important;
+    min-width: var(--button-min-width) !important;
+  }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1400px) {
+  .stripe-terminal-pos {
+    max-width: 1200px;
+  }
+}
+
+/* Small mobile phones - extra tight spacing */
+@media (max-width: 360px) {
+  .stripe-terminal-pos .stripe-terminal-admin-container {
+    padding: 0.75rem;
+  }
+
+  .stripe-terminal-pos .pos-section {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .stripe-terminal-pos .pos-section h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .stripe-terminal-pos .step-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  .stripe-terminal-pos .step-label {
+    font-size: 0.7rem;
+    max-width: 60px;
   }
 
   .stripe-terminal-pos .cart-table {
@@ -1655,23 +2037,30 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
 
   .stripe-terminal-pos .cart-table th,
   .stripe-terminal-pos .cart-table td {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .stripe-terminal-pos .button,
+  .stripe-terminal-pos button {
     padding: 0.75rem 0.5rem;
+    font-size: 0.875rem;
   }
 }
 
-@media (max-width: 480px) {
-  .stripe-terminal-pos .pos-section h3 {
-    font-size: 1.125rem;
+/* Landscape mobile phones */
+@media (max-height: 500px) and (orientation: landscape) {
+  .stripe-terminal-pos .payment-progress-container {
+    padding: 1rem;
+    margin: 1rem 0;
   }
 
   .stripe-terminal-pos .cancel-modal-content {
-    width: 95%;
-    margin: 1rem;
+    max-height: 85vh;
   }
 
   .stripe-terminal-pos .cancel-modal-header,
   .stripe-terminal-pos .cancel-modal-body {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 }
 
