@@ -98,7 +98,6 @@ if (!defined('ABSPATH')) exit;
 
                 <div class="payment-info-container">
                     <div class="form-row">
-                        <label for="payment-description">Additional Notes</label>
                         <input type="text" id="payment-description" placeholder="Additional notes about this order">
                     </div>
                     <div class="payment-button-container">
@@ -109,7 +108,7 @@ if (!defined('ABSPATH')) exit;
 
             <div class="pos-section">
                 <h3>⚡ Process Payment</h3>
-                
+
                 <!-- Progress Bar -->
                 <div class="payment-progress-container">
                     <div class="progress-steps">
@@ -144,16 +143,16 @@ if (!defined('ABSPATH')) exit;
         </div>
     </div>
 
-<!-- Enhanced Cancel Confirmation Modal -->
-<div id="cancel-confirmation-modal" class="cancel-modal stripe-terminal-pos">
-    <div class="cancel-modal-backdrop"></div>
-    <div class="cancel-modal-content">
+    <!-- Enhanced Cancel Confirmation Modal -->
+    <div id="cancel-confirmation-modal" class="cancel-modal stripe-terminal-pos">
+        <div class="cancel-modal-backdrop"></div>
+        <div class="cancel-modal-content">
             <div class="cancel-modal-header">
                 <h3><span class="cancel-icon">⚠️</span> Cancel Payment Transaction</h3>
             </div>
             <div class="cancel-modal-body">
                 <p class="cancel-warning">Are you sure you want to cancel this payment? This action cannot be undone.</p>
-                
+
                 <div class="transaction-summary">
                     <h4>Transaction Details:</h4>
                     <div class="summary-content">

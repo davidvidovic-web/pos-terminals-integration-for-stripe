@@ -92,7 +92,6 @@
 }
 
 .stripe-terminal-pos .form-row {
-  margin-bottom: 1.5rem;
   flex-grow: 1;
 }
 
@@ -847,6 +846,8 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
   background: var(--background-secondary);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-light);
+  position: relative;
+  z-index: 1;
 }
 
 .stripe-terminal-pos .progress-steps {
@@ -1016,7 +1017,7 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
   min-width: 280px;
   max-width: 400px;
   box-shadow: var(--shadow-lg);
-  z-index: 1000;
+  z-index: 9999;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
@@ -1038,6 +1039,7 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
     max-height: 70vh;
     overflow-y: auto;
     font-size: 0.8rem;
+    z-index: 99999;
   }
   
   .stripe-terminal-pos .step-data-tooltip::after {
@@ -1107,32 +1109,78 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
     padding: 1.5rem 1rem;
   }
   
+  /* Stack progress steps vertically on mobile */
+  .stripe-terminal-pos .progress-steps {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .stripe-terminal-pos .progress-step {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    flex: none;
+    width: 100%;
+  }
+  
   .stripe-terminal-pos .step-circle {
     width: 40px;
     height: 40px;
     font-size: 1rem;
+    flex-shrink: 0;
   }
   
   .stripe-terminal-pos .step-label {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
+    text-align: left;
+    white-space: normal;
+    flex: 1;
+    margin: 0;
   }
   
+  /* Hide progress lines on mobile since we're stacking */
   .stripe-terminal-pos .progress-line {
-    margin: 0 0.5rem;
+    display: none;
+  }
+  
+  /* Add vertical connector line instead */
+  .stripe-terminal-pos .progress-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 19px; /* Center of 40px circle */
+    top: 50px; /* Below the circle */
+    width: 2px;
+    height: 1.5rem;
+    background: var(--border-light);
+    z-index: 1;
+  }
+  
+  .stripe-terminal-pos .progress-step.completed:not(:last-child)::after {
+    background: var(--success-color);
   }
 }
 
 @media (max-width: 480px) {
   .stripe-terminal-pos .step-label {
-    font-size: 0.7rem;
-    max-width: 60px;
+    font-size: 0.8rem;
     white-space: normal;
+    line-height: 1.3;
   }
   
   .stripe-terminal-pos .step-circle {
     width: 35px;
     height: 35px;
     font-size: 0.875rem;
+  }
+  
+  /* Adjust vertical connector for smaller circles */
+  .stripe-terminal-pos .progress-step:not(:last-child)::after {
+    left: 16.5px; /* Center of 35px circle */
+    top: 45px; /* Below the smaller circle */
   }
 
   .wrap .stripe-terminal-admin-container {
@@ -1151,7 +1199,7 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1000;
+  z-index: 99999;
   display: none !important;
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -1171,7 +1219,21 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
 }
 
 .stripe-terminal-pos .cancel-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99998;
   display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stripe-terminal-pos .cancel-modal-backdrop.is-visible {
+  display: block;
+  opacity: 1;
 }
 
 .stripe-terminal-pos .cancel-modal-content {
@@ -1185,7 +1247,7 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
   overflow-y: auto;
   animation: modalSlideIn 0.3s ease-out;
   border: 2px solid var(--border-medium);
-  z-index: 2;
+  z-index: 99999;
 }
 
 @keyframes modalSlideIn {
@@ -1609,6 +1671,44 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
   box-sizing: border-box !important;
 }
 
+/* Z-index hierarchy to ensure tooltips and modals appear above everything */
+.stripe-terminal-pos .pos-section {
+  position: relative;
+  z-index: 1;
+}
+
+.stripe-terminal-pos .payment-progress-container {
+  position: relative;
+  z-index: 2;
+}
+
+.stripe-terminal-pos .progress-step {
+  position: relative;
+  z-index: 3;
+}
+
+/* Ensure tooltips and modals are above WordPress admin elements */
+.stripe-terminal-pos .step-data-tooltip,
+.stripe-terminal-pos .cancel-modal,
+.stripe-terminal-pos .cancel-modal-content {
+  z-index: 99999 !important;
+}
+
+.stripe-terminal-pos .cancel-modal-backdrop {
+  z-index: 99998 !important;
+}
+
+/* Override WordPress admin z-index conflicts */
+body.wp-admin .stripe-terminal-pos .step-data-tooltip,
+body.wp-admin .stripe-terminal-pos .cancel-modal,
+body.wp-admin .stripe-terminal-pos .cancel-modal-content {
+  z-index: 99999 !important;
+}
+
+body.wp-admin .stripe-terminal-pos .cancel-modal-backdrop {
+  z-index: 99998 !important;
+}
+
 /* Prevent WordPress admin styles from interfering with our buttons */
 .stripe-terminal-pos button,
 .stripe-terminal-pos .button,
@@ -1647,7 +1747,7 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
   max-width: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow: visible;
 }
 
 .stripe-terminal-pos .stripe-terminal-admin-container {
@@ -1658,7 +1758,7 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
 .stripe-terminal-pos .pos-section {
   padding: 1rem;
   margin-bottom: 1rem;
-  overflow-x: hidden;
+  overflow: visible;
 }
 
 /* Stack everything vertically on mobile by default */
@@ -1696,7 +1796,6 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
 /* Form rows stack on mobile */
 .stripe-terminal-pos .form-row {
   width: 100%;
-  margin-bottom: 1rem;
 }
 
 .stripe-terminal-pos .form-row input {
@@ -1776,34 +1875,67 @@ body.wp-admin .stripe-terminal-pos .payment-controls,
   word-wrap: break-word;
 }
 
-/* Progress bar mobile optimization */
+/* Progress bar mobile optimization - Use stacked layout by default */
 .stripe-terminal-pos .payment-progress-container {
   padding: 1.5rem 1rem;
   margin: 1.5rem 0;
-  overflow-x: auto;
+  overflow-x: visible;
   -webkit-overflow-scrolling: touch;
 }
 
+/* Mobile-first: Stack vertically by default */
 .stripe-terminal-pos .progress-steps {
-  min-width: 400px; /* Ensure progress doesn't get squished */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 1.5rem;
+}
+
+.stripe-terminal-pos .progress-step {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  flex: none;
+  width: 100%;
 }
 
 .stripe-terminal-pos .step-circle {
   width: 40px;
   height: 40px;
   font-size: 0.9rem;
+  flex-shrink: 0;
 }
 
 .stripe-terminal-pos .step-label {
-  font-size: 0.75rem;
-  max-width: 80px;
-  text-align: center;
-  line-height: 1.2;
+  font-size: 0.875rem;
+  text-align: left;
+  white-space: normal;
+  flex: 1;
+  margin: 0;
+  line-height: 1.3;
 }
 
+/* Hide horizontal progress lines on mobile */
 .stripe-terminal-pos .progress-line {
-  margin: 0 0.5rem;
-  min-width: 30px;
+  display: none;
+}
+
+/* Add vertical connector lines instead */
+.stripe-terminal-pos .progress-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 19px; /* Center of 40px circle */
+  top: 50px; /* Below the circle */
+  width: 2px;
+  height: 1.5rem;
+  background: var(--border-light);
+  z-index: 1;
+}
+
+.stripe-terminal-pos .progress-step.completed:not(:last-child)::after {
+  background: var(--success-color);
 }
 
 /* Modal mobile optimization */
@@ -1918,6 +2050,44 @@ body.wp-admin .stripe-terminal-pos #create-payment,
   .stripe-terminal-pos .terminal-list {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
+
+  /* Restore horizontal progress bar layout for tablet */
+  .stripe-terminal-pos .progress-steps {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  .stripe-terminal-pos .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .stripe-terminal-pos .step-label {
+    font-size: 0.8rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* Show horizontal progress lines on tablet */
+  .stripe-terminal-pos .progress-line {
+    display: block;
+    flex: 1;
+    height: 3px;
+    background: var(--border-light);
+    margin: 0 0.75rem;
+  }
+
+  /* Hide vertical connector lines on tablet */
+  .stripe-terminal-pos .progress-step:not(:last-child)::after {
+    display: none;
+  }
 }
 
 /* Desktop styles - 1025px and up */
@@ -1937,7 +2107,7 @@ body.wp-admin .stripe-terminal-pos #create-payment,
 
   .stripe-terminal-pos .payment-info-container {
     flex-direction: row;
-    align-items: end;
+    align-items: center;
     justify-content: space-between;
   }
 
@@ -1972,8 +2142,43 @@ body.wp-admin .stripe-terminal-pos #create-payment,
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 
+  /* Restore horizontal progress bar layout for desktop */
   .stripe-terminal-pos .progress-steps {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
     min-width: auto;
+  }
+
+  .stripe-terminal-pos .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .stripe-terminal-pos .step-label {
+    font-size: 0.875rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* Show horizontal progress lines on desktop */
+  .stripe-terminal-pos .progress-line {
+    display: block;
+    flex: 1;
+    height: 3px;
+    background: var(--border-light);
+    margin: 0 1rem;
+  }
+
+  /* Hide vertical connector lines on desktop */
+  .stripe-terminal-pos .progress-step:not(:last-child)::after {
+    display: none;
   }
 
   .stripe-terminal-pos .cart-table {
