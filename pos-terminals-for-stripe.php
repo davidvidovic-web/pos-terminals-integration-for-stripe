@@ -4,7 +4,7 @@
  * Plugin Name: POS Terminals for Stripe
  * Plugin URI: https://github.com/davidvidovic-web/stripe-pos-wp
  * Description: A WordPress plugin for Stripe Terminal POS integration with WooCommerce
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires PHP: 7.2
  * Author: David Vidovic
  * Author Email: mail@davidvidovic.com
@@ -911,7 +911,7 @@ class StripeTerminalPOS
                 'stripe-terminal-admin',
                 plugins_url('/assets/js/admin.js', __FILE__),
                 ['jquery'],
-                '1.0.0',
+                '1.0.1',
                 true
             );
         }
@@ -920,7 +920,7 @@ class StripeTerminalPOS
             'stripe-terminal-pos',
             plugins_url('/assets/js/main.js', __FILE__),
             ['jquery'],
-            '1.0.0',
+            '1.0.1',
             true
         );
 
@@ -928,7 +928,7 @@ class StripeTerminalPOS
             'stripe-terminal-pos',
             plugins_url('/assets/css/main.css', __FILE__),
             [],
-            '1.0.0'
+            '1.0.1'
         );
 
         $wc_currency = get_woocommerce_currency();

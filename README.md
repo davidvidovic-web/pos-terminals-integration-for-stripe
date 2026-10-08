@@ -1,9 +1,9 @@
 # POS Terminals for Stripe
 
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 
-**Version:** 1.0.0  
-**Tested up to:** WordPress 6.8  
+**Version:** 1.0.1  
+**Tested up to:** WordPress 7.1  
 **License:** GPL v2 or later
 
 Accept in-person payments with Stripe Terminal right from your WordPress dashboard. Beautiful, modern, and incredibly easy to use.

@@ -1,10 +1,10 @@
 === POS Terminals for Stripe ===
-Contributors: davidvidovic-web
-Tags: stripe, pos, payments, terminal, woocommerce, card-reader, retail, in-person-payments
+Contributors: davidvidovic
+Tags: stripe, pos, payments, terminal, woocommerce
 Requires at least: 5.0
-Tested up to: 6.8
+Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,9 @@ Yes! The plugin automatically creates WooCommerce orders when payments are compl
 
 == Changelog ==
 
+= 1.0.1 =
+* Tested and confirmed compatibility with WordPress 7.1
+
 = 1.0.0 =
 * Initial release
 * Beautiful, modern payment interface
@@ -132,6 +135,9 @@ Yes! The plugin automatically creates WooCommerce orders when payments are compl
 * Real-time payment status updates
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Compatibility update for WordPress 7.1.
 
 = 1.0.0 =
 First release! Install now and start accepting payments in minutes.
